@@ -65,6 +65,13 @@
 	                        <p:outputLabel for="endereco">Endereço</p:outputLabel>
 	                        <p:inputText id="endereco" value="#{crudPessoaController.pessoa.endereco}" required="false"/>
 	                    </div>
+	                    <div class="field col-12 md:col-4">
+			                <p:outputLabel value="Label"/>
+			                <p:selectOneMenu id="labeled" value="#{crudPessoaController.pessoa.nacionalidade}" label="Always Show Label"
+			                                alwaysDisplayLabel="false">
+			                    <f:selectItems value="#{crudPessoaController.listaNac}"/>
+			                </p:selectOneMenu>
+			            </div>
 	                </p:outputPanel>
 	            </p:outputPanel>
 	

@@ -13,8 +13,15 @@ public class Pessoa {
 	private String email;
 	private String telefoneCelular;
 	private String endereco;
+	private int nacionalidade;
 	
 	//GET e SET
+	public int getNacionalidade() {
+		return nacionalidade;
+	}
+	public void setNacionalidade(int nacionalidade) {
+		this.nacionalidade = nacionalidade;
+	} 
 	public String getNome() {
 		return nome;
 	}

@@ -1,11 +1,15 @@
 package br.edu.projeto.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -13,7 +17,9 @@ import javax.inject.Named;
 import org.primefaces.PrimeFaces;
 
 import br.edu.projeto.dao.PessoaDAO;
+import br.edu.projeto.dao.NacionalidadeDAO;
 import br.edu.projeto.model.Pessoa;
+import br.edu.projeto.model.Nacionalidades;
 
 //Escopo do objeto da classe (Bean)
 //ApplicationScoped é usado quando o objeto é único na aplicação (compartilhado entre usuários), permanece ativo enquanto a aplicação estiver ativa
@@ -35,10 +41,14 @@ public class CrudPessoaController implements Serializable {
 	
 	@Inject
     private PessoaDAO PessoaDAO;
-	
+	@Inject
+	private NacionalidadeDAO NacionalidadeDAO;
+
 	private Pessoa pessoa;
 	
 	private List<Pessoa> listaPessoa;
+	private List<Nacionalidades> listaNac1;
+	private Map<String, String> listaNac = new HashMap<>();
 	
 	private Boolean rendNovoCadastro;
 	
@@ -48,9 +58,32 @@ public class CrudPessoaController implements Serializable {
     @PostConstruct
     public void init() {
     	//Inicializa elementos importantes
+    	listaNac = new HashMap<>();
+    	this.setListaNac1(NacionalidadeDAO.listAll());
+    	
+    	for(int i = 0; i < listaNac1.size(); i++ ) {
+    		listaNac.put(listaNac1.get(i).getDesc(), listaNac1.get(i).getId().toString());
+    	}
+    	
     	this.setListaPessoa(PessoaDAO.listAll("",""));
     }
 
+	public Map<String, String> getListaNac() {
+		return listaNac;
+	}
+
+	public void setListaNac(Map<String, String> nacGroup) {
+		this.listaNac = nacGroup;
+	}
+    
+	public List<Nacionalidades> getListaNac1() {
+		return listaNac1;
+	}
+
+	public void setListaNac1(List<Nacionalidades> listaNac) {
+		this.listaNac1 = listaNac;
+	}
+    
 	public String getSelectedOption() {
         return selectedOption;
     }

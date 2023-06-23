@@ -34,10 +34,11 @@ public class PessoaDAO implements Serializable{
     	ResultSet rs = null;//Resposta do SGBD
 		String query = "SELECT * FROM Clientes WHERE nome LIKE '%" + filtro + "%'";
 
-		if (!opt.isEmpty()){
-			query += " AND genero = '" + opt + "'" ;
+		if (opt != null) {
+			if (!opt.isEmpty()){
+				query += " AND genero = '" + opt + "'" ;
+			}
 		}
-
 		try {
 			con = this.ds.getConnection();//Pegar um conexão
 			
@@ -57,6 +58,7 @@ public class PessoaDAO implements Serializable{
 				c.setEmail(rs.getString("email"));
 				c.setTelefoneCelular(rs.getString("telefone_celular"));
 				c.setEndereco(rs.getString("endereco"));
+				c.setNacionalidade(rs.getInt("nacionalidade_id"));
 				Pessoas.add(c);
 			}
 		} catch (SQLException e) {e.printStackTrace();
@@ -75,7 +77,7 @@ public class PessoaDAO implements Serializable{
     	try {
 	    	con = this.ds.getConnection();
 	    	try {
-				ps = con.prepareStatement("INSERT INTO Clientes (CPF, nome, nome_social, altura, massa, genero, idade, email, telefone_celular, endereco) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				ps = con.prepareStatement("INSERT INTO Clientes (CPF, nome, nome_social, altura, massa, genero, idade, email, telefone_celular, endereco, nacionalidade_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 				ps.setString(1, c.getCpf());
 				ps.setString(2, c.getNome());
 				ps.setString(3, c.getNomeSocial());
@@ -86,6 +88,7 @@ public class PessoaDAO implements Serializable{
 				ps.setString(8, c.getEmail());
 				ps.setString(9, c.getTelefoneCelular());
 				ps.setString(10 , c.getEndereco());
+				ps.setInt(11, c.getNacionalidade());
 				ps.execute();
 				resultado = true;
 			} catch (SQLException e) {e.printStackTrace();}
@@ -105,7 +108,7 @@ public class PessoaDAO implements Serializable{
     	try {
 	    	con = this.ds.getConnection();
 	    	try {				
-				ps = con.prepareStatement("UPDATE Clientes SET nome = ?, nome_social = ?, altura = ?, massa = ?, genero = ?, idade = ?, email = ?, telefone_celular = ?, endereco = ? WHERE CPF = ?");
+				ps = con.prepareStatement("UPDATE Clientes SET nome = ?, nome_social = ?, altura = ?, massa = ?, genero = ?, idade = ?, email = ?, telefone_celular = ?, endereco = ?, nacionalidade_id = ? WHERE CPF = ?");
 				ps.setString(1, c.getNome());
 				ps.setString(2, c.getNomeSocial());
 				ps.setDouble(3, Float.parseFloat(c.getAltura().replace(",", ".")));
@@ -115,7 +118,8 @@ public class PessoaDAO implements Serializable{
 				ps.setString(7, c.getEmail());
 				ps.setString(8, c.getTelefoneCelular());
 				ps.setString(9, c.getEndereco());
-				ps.setString(10, c.getCpf());
+				ps.setInt(10, c.getNacionalidade());
+				ps.setString(11, c.getCpf());
 				ps.execute();	
 				resultado = true;
 			} catch (SQLException e) {e.printStackTrace();}

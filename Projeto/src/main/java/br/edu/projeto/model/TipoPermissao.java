@@ -24,4 +24,3 @@ public class TipoPermissao {
 		this.permissao = permissao;
 	}	
 }
-
